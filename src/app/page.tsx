@@ -11,6 +11,7 @@ import { sampleJobListings, jobDetailsData } from "@/lib/data";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useScreeningFlow } from "@/contexts/ScreeningFlowContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Define all possible view states
 type PageView =
@@ -20,6 +21,24 @@ type PageView =
   | "upload"
   | "chat"
   | "completion";
+
+// Updated Animation variants with slide + fade
+const pageVariants = {
+  initial: {
+    opacity: 0,
+    x: "30px", // Start slightly to the right
+  },
+  in: {
+    opacity: 1,
+    x: 0, // Animate to center
+    transition: { duration: 0.4, ease: "easeInOut" },
+  },
+  exit: {
+    opacity: 0,
+    x: "-30px", // Exit slightly to the left
+    transition: { duration: 0.3, ease: "easeInOut" },
+  },
+};
 
 export default function HomePage() {
   const [view, setView] = useState<PageView>("list");
@@ -83,9 +102,16 @@ export default function HomePage() {
     selectedJobId === jobDetailsData.id ? jobDetailsData : null;
 
   return (
-    <div className="flex flex-col gap-4 h-full">
+    <AnimatePresence mode="wait">
       {view === "list" && (
-        <>
+        <motion.div
+          key="list"
+          initial="initial"
+          animate="in"
+          exit="exit"
+          variants={pageVariants}
+          className="flex flex-col gap-4 h-full"
+        >
           <h1 className="text-2xl font-semibold">Available Job Postings</h1>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {sampleJobListings.map((job) => (
@@ -97,11 +123,18 @@ export default function HomePage() {
               />
             ))}
           </div>
-        </>
+        </motion.div>
       )}
 
       {view === "detail" && detailedJobData && (
-        <>
+        <motion.div
+          key="detail"
+          initial="initial"
+          animate="in"
+          exit="exit"
+          variants={pageVariants}
+          className="flex flex-col gap-4 h-full"
+        >
           <Button
             variant="outline"
             size="sm"
@@ -115,36 +148,71 @@ export default function HomePage() {
             job={detailedJobData}
             onStartApplyFlow={handleStartApplyFlow}
           />
-        </>
+        </motion.div>
       )}
 
       {view === "prescreening" && currentJobDetails && (
-        <PreScreeningInfo
-          jobTitle={currentJobDetails.title}
-          companyName={currentJobDetails.company}
-          onBegin={handleBeginScreening}
-          onExit={handleExitPreScreening}
-        />
+        <motion.div
+          key="prescreening"
+          initial="initial"
+          animate="in"
+          exit="exit"
+          variants={pageVariants}
+        >
+          <PreScreeningInfo
+            jobTitle={currentJobDetails.title}
+            companyName={currentJobDetails.company}
+            onBegin={handleBeginScreening}
+            onExit={handleExitPreScreening}
+          />
+        </motion.div>
       )}
 
       {view === "upload" && (
-        <UploadStage
-          onNext={() => handleNavigate("chat")}
-          onGoBack={() => handleNavigate("prescreening")}
-        />
+        <motion.div
+          key="upload"
+          initial="initial"
+          animate="in"
+          exit="exit"
+          variants={pageVariants}
+          className="flex flex-col h-full"
+        >
+          <UploadStage
+            onNext={() => handleNavigate("chat")}
+            onGoBack={() => handleNavigate("prescreening")}
+          />
+        </motion.div>
       )}
       {view === "chat" && (
-        <ChatStage
-          onNext={() => handleNavigate("completion")}
-          onGoBack={() => handleNavigate("upload")}
-        />
+        <motion.div
+          key="chat"
+          initial="initial"
+          animate="in"
+          exit="exit"
+          variants={pageVariants}
+          className="flex flex-col h-full"
+        >
+          <ChatStage
+            onNext={() => handleNavigate("completion")}
+            onGoBack={() => handleNavigate("upload")}
+          />
+        </motion.div>
       )}
       {view === "completion" && (
-        <CompletionStage
-          onSubmit={handleFinishFlow}
-          onCancel={handleFinishFlow}
-        />
+        <motion.div
+          key="completion"
+          initial="initial"
+          animate="in"
+          exit="exit"
+          variants={pageVariants}
+          className="flex flex-col h-full"
+        >
+          <CompletionStage
+            onSubmit={handleFinishFlow}
+            onCancel={handleFinishFlow}
+          />
+        </motion.div>
       )}
-    </div>
+    </AnimatePresence>
   );
 }

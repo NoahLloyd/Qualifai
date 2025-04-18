@@ -19,6 +19,10 @@ export function ChatStage({ onNext, onGoBack }: ChatStageProps) {
     useScreeningFlow();
   const [showFinishButton, setShowFinishButton] = useState(false);
 
+  // Get Vapi credentials from environment variables
+  const vapiKey = process.env.NEXT_PUBLIC_VAPI_KEY;
+  const vapiAssistantId = process.env.NEXT_PUBLIC_VAPI_ASSISTANT_ID;
+
   // Send initial greeting from AI if messages are empty
   useEffect(() => {
     if (messages.length === 0 && chatFlowData.length > 0) {
@@ -77,19 +81,39 @@ export function ChatStage({ onNext, onGoBack }: ChatStageProps) {
     // setCurrentStage('completion'); // REMOVE direct context update
   };
 
+  // Render error if Vapi key is missing
+  if (!vapiKey) {
+    console.error(
+      "VAPI Key (NEXT_PUBLIC_VAPI_KEY) is not defined in environment variables."
+    );
+    return (
+      <div className="flex flex-col h-full flex-grow min-h-0 items-center justify-center p-4 text-center">
+        <h2 className="text-xl font-semibold p-4 text-red-600">
+          Configuration Error
+        </h2>
+        <p className="text-muted-foreground">
+          The Voice Chat feature is unavailable because the Vapi API Key is
+          missing. Please check the environment configuration.
+        </p>
+        <div className="mt-4">
+          <Button variant="outline" onClick={onGoBack}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Go Back
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col h-full flex-grow min-h-0">
-      <h2 className="text-xl font-semibold p-4 border-b text-center bg-background flex-shrink-0">
-        Conversational Assessment
-      </h2>
-      <div className="flex-grow relative min-h-0">
-        {" "}
-        {/* Make this relative for potential absolute positioning inside ChatInterface */}
+      <div className="flex-grow relative min-h-0 bg-background">
         <ChatInterface
           messages={messages}
           onSendMessage={handleSendMessage}
           isProcessing={isProcessing}
-          vapiKey={process.env.NEXT_PUBLIC_VAPI_KEY || ""}
+          vapiKey={vapiKey}
+          vapiAssistantId={vapiAssistantId}
         />
       </div>
       {/* Footer Area */}
@@ -99,13 +123,10 @@ export function ChatStage({ onNext, onGoBack }: ChatStageProps) {
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </Button>
-        {/* Proceed Button (conditionally rendered) */}
-        {showFinishButton && !isProcessing ? (
-          <Button onClick={handleFinish}>Proceed to Final Step</Button>
-        ) : (
-          // Placeholder to maintain spacing, or potentially show a spinner/disabled state
-          <div className="h-10"></div> // Maintain height
-        )}
+        {/* Proceed Button - Always visible now */}
+        <Button onClick={handleFinish} disabled={isProcessing}>
+          Proceed to Final Step
+        </Button>
       </div>
     </div>
   );
