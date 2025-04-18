@@ -35,8 +35,8 @@ To run this project locally:
 1.  **Clone the repository:**
 
     ```bash
-    git clone <your-repository-url>
-    cd <repository-directory>
+    git clone https://github.com/NoahLloyd/Qualifai.git
+    cd Qualifai
     ```
 
 2.  **Install dependencies:**
