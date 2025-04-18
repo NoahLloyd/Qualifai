@@ -1,37 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Qualifai - Applicant Screening Demo
+
+[![Deploy with Vercel](https://vercel.com/button)](https://qualifai-one.vercel.app/)
+
+This project is the front-end for Qualifai, including an applicant screening flow for the platform. It includes the experience of applying for a job, uploading documents, and going through a AI-driven conversational assessment.
+
+**Live Demo:** [**https://qualifai-one.vercel.app/**](https://qualifai-one.vercel.app/)
+
+## Features
+
+- View sample job postings.
+- Interactive application flow with multiple stages:
+  - Pre-screening information (time estimate, privacy).
+  - Document upload interface (resume, cover letter, links).
+  - AI-driven conversational assessment.
+  - Final submission confirmation.
+- Smooth page transitions using Framer Motion.
+- Clean UI built with Next.js (App Router) and shadcn/ui.
+- Pages for "My Applications", "Profile", and "Settings".
+- Text and voice input conversation for the chat, powered by VAPI AI.
+
+## Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org/) 15+ (App Router)
+- **UI:** [React](https://react.dev/), [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/)
+- **Voice AI:** [VAPI AI](https://vapi.ai/)
+- **Animation:** [Framer Motion](https://www.framer.com/motion/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Deployment:** [Vercel](https://vercel.com/)
 
 ## Getting Started
 
-First, run the development server:
+To run this project locally:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1.  **Clone the repository:**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    ```bash
+    git clone <your-repository-url>
+    cd <repository-directory>
+    ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2.  **Install dependencies:**
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```bash
+    npm install
+    # or
+    # yarn install
+    # or
+    # pnpm install
+    # or
+    # bun install
+    ```
 
-## Learn More
+3.  **(Optional) Configure VAPI:** If implementing VAPI integration, set up necessary API keys/environment variables (details would go here).
 
-To learn more about Next.js, take a look at the following resources:
+4.  **Run the development server:**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```bash
+    npm run dev
+    # or
+    # yarn dev
+    # or
+    # pnpm dev
+    # or
+    # bun dev
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+5.  **Open your browser:**
+    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- The conversational AI flow follows a defined path for demonstration purposes.
+- Ensure necessary environment variables are configured if running locally with full voice features:
+  - `NEXT_PUBLIC_VAPI_KEY`: Your VAPI API key
+  - `NEXT_PUBLIC_VAPI_ASSISTANT_ID`: Your VAPI assistant ID
+- Create a `.env.local` file in the root directory with these variables to enable voice features.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-# Qualifai
+---
+
+_Aino, Oliver, Noah_
