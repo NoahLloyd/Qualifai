@@ -3,15 +3,8 @@
 import React, { createContext, useState, useContext, ReactNode } from "react";
 import { ChatMessage } from "@/lib/types"; // Import ChatMessage type
 
-// Define the possible stages
-export type ScreeningStage =
-  | "initial"
-  | "guidance"
-  | "upload"
-  | "chat"
-  | "completion"
-  | "cancelled"
-  | "submitted";
+// Define the possible stages - NO LONGER NEEDED FOR VIEW CONTROL
+// export type ScreeningStage = ...
 
 // Define the structure for uploaded files
 interface UploadedFilesState {
@@ -22,41 +15,41 @@ interface UploadedFilesState {
 
 // Define the shape of the context data
 interface ScreeningFlowContextType {
-  currentStage: ScreeningStage;
+  // currentStage: ScreeningStage; // REMOVED
   uploadedFiles: UploadedFilesState;
-  messages: ChatMessage[]; // Add messages state
-  isProcessing: boolean; // Add processing state for AI responses
-  setCurrentStage: (stage: ScreeningStage) => void;
+  messages: ChatMessage[];
+  isProcessing: boolean;
+  // setCurrentStage: (stage: ScreeningStage) => void; // REMOVED
   setUploadedFile: (
     type: "resume" | "coverLetter",
     name: string | null
   ) => void;
   addLink: (link: string) => void;
   removeLink: (link: string) => void;
-  addMessage: (message: Omit<ChatMessage, "id" | "timestamp">) => void; // Function to add a message
-  setIsProcessing: (processing: boolean) => void; // Function to set processing state
-  resetFlow: () => void; // Function to reset the flow
+  addMessage: (message: Omit<ChatMessage, "id" | "timestamp">) => void;
+  setIsProcessing: (processing: boolean) => void;
+  resetFlow: () => void;
 }
 
-// Create the context with a default undefined value
+// Create the context
 const ScreeningFlowContext = createContext<
   ScreeningFlowContextType | undefined
 >(undefined);
 
-// Define the initial state with explicit type
+// Define the initial state - REMOVE currentStage
 const initialState: {
-  currentStage: ScreeningStage;
+  // currentStage: ScreeningStage; // REMOVED
   uploadedFiles: UploadedFilesState;
-  messages: ChatMessage[]; // Initialize messages
-  isProcessing: boolean; // Initialize processing state
+  messages: ChatMessage[];
+  isProcessing: boolean;
 } = {
-  currentStage: "initial",
+  // currentStage: "upload", // REMOVED
   uploadedFiles: {
     resume: null,
     coverLetter: null,
     links: [],
   },
-  messages: [], // Start with no messages
+  messages: [],
   isProcessing: false,
 };
 
@@ -66,9 +59,7 @@ export const ScreeningFlowProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [currentStage, setCurrentStage] = useState<ScreeningStage>(
-    initialState.currentStage
-  );
+  // const [currentStage, setCurrentStage] = useState<ScreeningStage>(initialState.currentStage); // REMOVED
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFilesState>(
     initialState.uploadedFiles
   );
@@ -85,22 +76,19 @@ export const ScreeningFlowProvider = ({
   ) => {
     setUploadedFiles((prev) => ({ ...prev, [type]: name }));
   };
-
   const addLink = (link: string) => {
     setUploadedFiles((prev) => ({ ...prev, links: [...prev.links, link] }));
   };
-
   const removeLink = (link: string) => {
     setUploadedFiles((prev) => ({
       ...prev,
       links: prev.links.filter((l) => l !== link),
     }));
   };
-
   const addMessage = (messageData: Omit<ChatMessage, "id" | "timestamp">) => {
     const newMessage: ChatMessage = {
       ...messageData,
-      id: Date.now().toString() + Math.random().toString(36).substring(2, 9), // Simple unique ID
+      id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
       timestamp: Date.now(),
     };
     setMessages((prev) => [...prev, newMessage]);
@@ -108,23 +96,23 @@ export const ScreeningFlowProvider = ({
 
   // Reset function
   const resetFlow = () => {
-    setCurrentStage(initialState.currentStage);
+    // setCurrentStage(initialState.currentStage); // REMOVED
     setUploadedFiles(initialState.uploadedFiles);
-    setMessages(initialState.messages); // Reset messages
-    setIsProcessing(initialState.isProcessing); // Reset processing state
+    setMessages(initialState.messages);
+    setIsProcessing(initialState.isProcessing);
   };
 
   const value = {
-    currentStage,
+    // currentStage, // REMOVED
     uploadedFiles,
-    messages, // Provide messages
-    isProcessing, // Provide processing state
-    setCurrentStage,
+    messages,
+    isProcessing,
+    // setCurrentStage, // REMOVED
     setUploadedFile,
     addLink,
     removeLink,
-    addMessage, // Provide addMessage function
-    setIsProcessing, // Provide setIsProcessing function
+    addMessage,
+    setIsProcessing,
     resetFlow,
   };
 
@@ -135,7 +123,6 @@ export const ScreeningFlowProvider = ({
   );
 };
 
-// Create a custom hook for easy context consumption
 export const useScreeningFlow = () => {
   const context = useContext(ScreeningFlowContext);
   if (context === undefined) {

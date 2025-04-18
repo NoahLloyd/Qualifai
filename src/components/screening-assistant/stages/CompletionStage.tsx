@@ -3,68 +3,68 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useScreeningFlow } from "@/contexts/ScreeningFlowContext";
-import { CheckCircle, XCircle, FileText, Link as LinkIcon } from "lucide-react";
+import { CheckCircle, XCircle, Send, CalendarDays } from "lucide-react"; // Updated icons
 
-export function CompletionStage() {
-  const { setCurrentStage, uploadedFiles } = useScreeningFlow();
+// Define props
+interface CompletionStageProps {
+  onSubmit: () => void;
+  onCancel: () => void;
+}
+
+export function CompletionStage({ onSubmit, onCancel }: CompletionStageProps) {
+  // Context no longer needed here if summary is removed
+  // const { uploadedFiles } = useScreeningFlow();
 
   const handleSubmit = () => {
-    console.log("Submitting application with:", uploadedFiles);
-    // In a real app, you would send data to the backend here
-    setCurrentStage("submitted"); // This will trigger the modal close via ScreeningModal logic
+    console.log("Submitting application..."); // Simplified log
+    onSubmit();
   };
 
   const handleCancel = () => {
     console.log("Cancelling application.");
-    setCurrentStage("cancelled"); // This will also trigger the modal close
+    onCancel();
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6 text-center">
       <CheckCircle className="w-16 h-16 text-green-500 mb-6" />
-      <h2 className="text-2xl font-semibold mb-4">Ready to Submit?</h2>
-      <p className="mb-8 text-muted-foreground max-w-md">
-        You've completed the initial screening. Review your provided information
-        below. Click "Submit Application" to finalize or "Cancel" to withdraw.
+      <h2 className="text-2xl font-semibold mb-4">Screening Complete!</h2>
+      {/* Updated description text */}
+      <p className="mb-10 text-muted-foreground max-w-lg">
+        You've successfully completed the initial interactive screening. This
+        helps us understand your unique skills better and gives your application
+        a great chance to stand out.
       </p>
 
-      {/* Optional: Summary of uploaded info */}
-      <div className="mb-8 text-sm text-left bg-muted/50 p-4 rounded-lg w-full max-w-sm">
-        <h3 className="font-medium mb-2 text-foreground">
-          Application Summary:
+      {/* Next Steps Section */}
+      <div className="w-full max-w-md mb-10 p-6 border bg-muted/40 rounded-lg">
+        <h3 className="text-lg font-semibold mb-4 text-center text-foreground">
+          Next Steps
         </h3>
-        <ul className="space-y-1.5 text-muted-foreground">
-          {uploadedFiles.resume && (
-            <li className="flex items-center gap-2">
-              <FileText className="w-4 h-4 flex-shrink-0" />
-              <span className="truncate">Resume: {uploadedFiles.resume}</span>
-            </li>
-          )}
-          {uploadedFiles.coverLetter && (
-            <li className="flex items-center gap-2">
-              <FileText className="w-4 h-4 flex-shrink-0" />
-              <span className="truncate">
-                Cover Letter: {uploadedFiles.coverLetter}
-              </span>
-            </li>
-          )}
-          {uploadedFiles.links.length > 0 && (
-            <li className="flex items-center gap-2">
-              <LinkIcon className="w-4 h-4 flex-shrink-0" />
-              <span>{uploadedFiles.links.length} Link(s) provided</span>
-            </li>
-          )}
-          {/* Add Chat Summary placeholder if needed later */}
-        </ul>
+        <div className="flex items-start gap-4 mb-4">
+          <Send className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+          <p className="text-sm text-left text-muted-foreground">
+            Clicking "Submit Application" will send your uploaded documents and
+            screening responses directly to the hiring team at Snap.
+          </p>
+        </div>
+        <div className="flex items-start gap-4">
+          <CalendarDays className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+          <p className="text-sm text-left text-muted-foreground">
+            We typically review applications within 5-7 business days. You can
+            track your status under "My Applications".
+          </p>
+        </div>
       </div>
 
-      <div className="flex gap-4">
-        <Button variant="outline" onClick={handleCancel}>
+      {/* Action Buttons */}
+      <div className="flex flex-col sm:flex-row gap-4">
+        <Button variant="outline" onClick={handleCancel} size="lg">
           <XCircle className="mr-2 h-4 w-4" />
           Cancel Application
         </Button>
-        <Button onClick={handleSubmit}>
-          <CheckCircle className="mr-2 h-4 w-4" />
+        <Button onClick={handleSubmit} size="lg">
+          <Send className="mr-2 h-4 w-4" /> {/* Changed icon */}
           Submit Application
         </Button>
       </div>

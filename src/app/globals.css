@@ -121,23 +121,9 @@
   }
 }
 
-/* Styles for Full-Page Screening Transition */
-.screening-overlay {
-  @apply fixed inset-0 z-50 bg-background transition-opacity duration-300 ease-in-out;
-}
-
-.screening-overlay-enter {
-  @apply opacity-0;
-}
-
-.screening-overlay-enter-active {
-  @apply opacity-100;
-}
-
-.screening-overlay-exit {
-  @apply opacity-100;
-}
-
-.screening-overlay-exit-active {
-  @apply opacity-0;
-}
+/* REMOVED Styles for Full-Page Screening Transition */
+/* .screening-overlay { ... } */
+/* .screening-overlay-enter { ... } */
+/* .screening-overlay-enter-active { ... } */
+/* .screening-overlay-exit { ... } */
+/* .screening-overlay-exit-active { ... } */

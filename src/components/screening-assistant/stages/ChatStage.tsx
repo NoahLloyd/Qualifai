@@ -5,15 +5,18 @@ import { useScreeningFlow } from "@/contexts/ScreeningFlowContext";
 import { ChatInterface } from "../ChatInterface";
 import { getNextQuestion, chatFlowData } from "@/lib/data"; // Use specific imports
 import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react"; // Add ArrowLeft
 
-export function ChatStage() {
-  const {
-    messages,
-    addMessage,
-    isProcessing,
-    setIsProcessing,
-    setCurrentStage,
-  } = useScreeningFlow();
+// Define props for ChatStage
+interface ChatStageProps {
+  onNext: () => void;
+  onGoBack: () => void; // Add back navigation prop
+}
+
+export function ChatStage({ onNext, onGoBack }: ChatStageProps) {
+  // Use props
+  const { messages, addMessage, isProcessing, setIsProcessing } =
+    useScreeningFlow();
   const [showFinishButton, setShowFinishButton] = useState(false);
 
   // Send initial greeting from AI if messages are empty
@@ -40,34 +43,46 @@ export function ChatStage() {
       setTimeout(resolve, 1000 + Math.random() * 500)
     ); // Simulate varied delay
 
-    // Calculate based on the number of messages *after* adding the user's message
-    const nextQuestion = getNextQuestion(messages.length + 1); // +1 for the message just added
+    const currentMessageCount = messages.length + 1; // +1 for the user message just added
 
     setIsProcessing(false);
 
-    // 3. Add AI response (next question) or conclude
-    if (nextQuestion) {
-      addMessage({ sender: "ai", text: nextQuestion.aiPrompt });
-    } else {
-      // No more questions - conversation is considered complete
+    // Check if we've reached 3 messages (Initial AI + User Reply + This new AI message)
+    if (currentMessageCount >= 3) {
+      // Conclude the chat
       addMessage({
         sender: "ai",
         text: "Thanks! That's all the information I need for this initial screening. Please proceed to the final step.",
       });
       setShowFinishButton(true);
+    } else {
+      // This part might not even be reached with the new logic, but keep for potential future expansion
+      const nextQuestion = getNextQuestion(currentMessageCount);
+      if (nextQuestion) {
+        addMessage({ sender: "ai", text: nextQuestion.aiPrompt });
+      } else {
+        // Fallback conclusion if getNextQuestion logic fails or flow changes
+        addMessage({
+          sender: "ai",
+          text: "Great, thank you for that information. Let's move to the final step.",
+        });
+        setShowFinishButton(true);
+      }
     }
   };
 
   const handleFinish = () => {
-    setCurrentStage("completion");
+    // Use the onNext prop passed from HomePage
+    onNext();
+    // setCurrentStage('completion'); // REMOVE direct context update
   };
 
   return (
-    <div className="flex flex-col h-full">
-      <h2 className="text-xl font-semibold p-4 border-b text-center bg-background">
+    <div className="flex flex-col h-full flex-grow min-h-0">
+      <h2 className="text-xl font-semibold p-4 border-b text-center bg-background flex-shrink-0">
         Conversational Assessment
       </h2>
-      <div className="flex-grow relative">
+      <div className="flex-grow relative min-h-0">
         {" "}
         {/* Make this relative for potential absolute positioning inside ChatInterface */}
         <ChatInterface
@@ -76,11 +91,21 @@ export function ChatStage() {
           isProcessing={isProcessing}
         />
       </div>
-      {showFinishButton && !isProcessing && (
-        <div className="p-4 border-t flex justify-end bg-background">
+      {/* Footer Area */}
+      <div className="p-4 border-t flex justify-between items-center bg-background flex-shrink-0">
+        {/* Back Button - only show if not finished? Or always? Let's show always for now. */}
+        <Button variant="outline" onClick={onGoBack} disabled={isProcessing}>
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back
+        </Button>
+        {/* Proceed Button (conditionally rendered) */}
+        {showFinishButton && !isProcessing ? (
           <Button onClick={handleFinish}>Proceed to Final Step</Button>
-        </div>
-      )}
+        ) : (
+          // Placeholder to maintain spacing, or potentially show a spinner/disabled state
+          <div className="h-10"></div> // Maintain height
+        )}
+      </div>
     </div>
   );
 }
