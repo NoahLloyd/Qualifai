@@ -120,3 +120,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Styles for Full-Page Screening Transition */
+.screening-overlay {
+  @apply fixed inset-0 z-50 bg-background transition-opacity duration-300 ease-in-out;
+}
+
+.screening-overlay-enter {
+  @apply opacity-0;
+}
+
+.screening-overlay-enter-active {
+  @apply opacity-100;
+}
+
+.screening-overlay-exit {
+  @apply opacity-100;
+}
+
+.screening-overlay-exit-active {
+  @apply opacity-0;
+}
