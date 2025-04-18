@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
+// import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LayoutGrid, LogOut } from "lucide-react"; // Example icons
+// import { LogOut } from "lucide-react";
+import { LayoutGrid /*, LogOut*/ } from "lucide-react"; // Example icons
 
 export function Header() {
   return (

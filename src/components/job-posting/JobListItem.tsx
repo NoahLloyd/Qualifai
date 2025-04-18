@@ -1,13 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardFooter,
-} from "@/components/ui/card";
+// import Link from "next/link";
+import { Card, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin, Building, ArrowRight } from "lucide-react";
 import { JobDetails } from "@/lib/types";

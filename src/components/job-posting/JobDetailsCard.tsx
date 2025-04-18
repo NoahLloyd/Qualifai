@@ -3,7 +3,6 @@
 import { JobDetails } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { MapPin, Building, CheckCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 interface JobDetailsCardProps {
   job: JobDetails;

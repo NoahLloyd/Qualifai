@@ -80,7 +80,7 @@ export default function ApplicationsPage() {
         <CardHeader>
           <CardTitle>Application History</CardTitle>
           <CardDescription>
-            Track the status of jobs you've applied for through Qualifai.
+            Track the status of jobs you&apos;ve applied for through Qualifai.
           </CardDescription>
         </CardHeader>
         <CardContent>

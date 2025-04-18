@@ -53,7 +53,7 @@ export function PreScreeningInfo({
       {/* Main Content Card */}
       <div className="bg-card border rounded-lg shadow-sm p-6 md:p-8 w-full mb-10">
         <h2 className="text-xl text-center font-semibold mb-3">
-          Let's get started!
+          Let&apos;s get started!
         </h2>
         <Separator className="w-1/3 mx-auto mb-6" />
         <p className="mb-8 text-center text-muted-foreground">
@@ -85,8 +85,8 @@ export function PreScreeningInfo({
               </h3>
               <p className="text-sm text-muted-foreground">
                 Your responses and documents are confidential and used solely
-                for evaluating your application. We don't share or sell your
-                data.
+                for evaluating your application. We don&apos;t share or sell
+                your data.
               </p>
             </div>
           </div>

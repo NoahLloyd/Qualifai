@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { SendHorizonal, Mic } from "lucide-react";
+import { SendHorizonal /*, Mic*/ } from "lucide-react";
 import { VoiceInputButton } from "./VoiceInputButton";
 
 interface ChatInputAreaProps {
