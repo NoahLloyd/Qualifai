@@ -89,6 +89,7 @@ export function ChatStage({ onNext, onGoBack }: ChatStageProps) {
           messages={messages}
           onSendMessage={handleSendMessage}
           isProcessing={isProcessing}
+          vapiKey={process.env.NEXT_PUBLIC_VAPI_KEY || ""}
         />
       </div>
       {/* Footer Area */}
